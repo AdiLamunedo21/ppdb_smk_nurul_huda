@@ -33,6 +33,7 @@ class KonfirmasiIjazah extends Notification
 
         return [
             "message" => $message,
+            'link' => '/dashboard',
         ];
     }
 }

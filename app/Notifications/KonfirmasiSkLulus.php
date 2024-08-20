@@ -33,6 +33,7 @@ class KonfirmasiSkLulus extends Notification
 
         return [
             "message" => $message,
+            'link' => '/dashboard',
         ];
     }
 }

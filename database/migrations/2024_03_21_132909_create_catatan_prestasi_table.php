@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('catatan_prestasi', function (Blueprint $table) {
             $table->id('prestasi_id');
             $table->foreignId('peserta_id')->references('peserta_id')->on('peserta');
-            $table->enum('berprestasi', ['belum','tidak', 'iya'])->nullable();
+            $table->enum('apakah_berprestasi', ['belum','tidak', 'iya'])->nullable();
             $table->string('nama_prestasi')->nullable();
             $table->date('tahun')->nullable();
             $table->string('penyelenggara')->nullable();

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('ayah_id');
             $table->foreignId('peserta_id')->references('peserta_id')->on('peserta');
             $table->enum('punya_ayah', ['belum_ibu', 'tidak_ayah', 'iya_ayah',])->nullable();
-            $table->string('nama_lengka_ayah')->nullable();
+            $table->string('nama_lengkap_ayah')->nullable();
             $table->date('tahun_lahir_ayah')->nullable();
             $table->enum('pendidikan_terakhir_ayah', ['sd', 'sltp', 'slta', 'diploma', 's1', 's2', 's3', 'lainnya'])->nullable();
             $table->string('pekerjaan_ayah')->nullable();

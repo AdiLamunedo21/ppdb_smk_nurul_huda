@@ -77,12 +77,6 @@ Untuk pengembangan:
 npm run dev
 ```
 
-Untuk produksi:
-
-```bash
-npm run build
-```
-
 ### 7. Jalankan Aplikasi
 
 Terakhir, mulai server pengembangan Laravel:
@@ -98,3 +92,4 @@ Aplikasi sekarang dapat diakses di `http://localhost:8000`.
 -   **TailwindCSS**: Digunakan untuk styling, bersama dengan komponen kustom.
 -   **Vite**: Digunakan untuk alat frontend modern.
 -   **Flowbite**: Komponen UI berbasis TailwindCSS.
+-   **Untuk Memunculkan gambar**: Jika Gambar tidak muncul Gunakan terminal lalu ketik "php artisan storage:link"
