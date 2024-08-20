@@ -77,11 +77,6 @@ Untuk pengembangan:
 npm run dev
 ```
 
-Untuk produksi:
-
-```bash
-npm run build
-```
 
 ### 7. Jalankan Aplikasi
 
