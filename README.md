@@ -1,8 +1,8 @@
-# Setup Projek Laravel
+# Setup Projek Laravel PPDB
 
 Ini adalah proyek Laravel yang menggunakan Vite untuk pengelolaan aset, TailwindCSS untuk styling, dan Flowbite untuk komponen UI. Berikut adalah langkah-langkah untuk mengatur proyek ini di mesin lokal Anda.
 
-## Prasyarat
+## requirement
 
 Pastikan Anda telah menginstal:
 
@@ -31,7 +31,7 @@ composer install
 
 ### 3. Install Dependensi Node.js
 
-Install paket Node.js yang diperlukan menggunakan npm atau yarn.
+Install paket Node.js yang diperlukan menggunakan npm.
 
 Menggunakan npm:
 
