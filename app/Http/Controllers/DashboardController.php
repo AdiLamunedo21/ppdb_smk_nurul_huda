@@ -18,6 +18,7 @@ class DashboardController extends Controller
 {
 
     public function index() {
+        $peserta = null;
         $statistik = [];
         if (auth()->user()->hasRole('superadmin') || auth()->user()->hasRole('admin') ) {
             $gelombang = new Gelombang;
@@ -77,7 +78,10 @@ class DashboardController extends Controller
                 'belum_daftar_ulang' => $belum_daftar_ulang,
             ];
 
-            return view('pages.backsite.dashboard.index', ['statistik' => (object) $statistik]);
+            return view('pages.backsite.dashboard.index', [
+                'statistik' => (object) $statistik,
+                'peserta' => $peserta
+            ]);
         }
         else if (auth()->user()->hasRole('siswa')) {
             $jurusan = Jurusan::all();
@@ -87,9 +91,6 @@ class DashboardController extends Controller
             $peserta = Peserta::with('jurusan')->find(auth()->user()->peserta_id);
 
             $gelombang = Gelombang::where('aktif', true)->first();
-
-
-
 
             return view('pages.backsite.dashboard.index', [
                 'statistik' => (object) $statistik,

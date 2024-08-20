@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id('siswa_id');
-            $table->char('nis')->unique();
+            $table->char('nisn')->unique();
             $table->foreignId('peserta_id')->references('peserta_id')->on('peserta');
             $table->foreignId('jurusan_id')->references('jurusan_id')->on('jurusan');
             $table->string('id_siswa_kemdikbud')->nullable();

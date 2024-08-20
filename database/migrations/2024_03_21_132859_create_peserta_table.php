@@ -53,7 +53,7 @@ return new class extends Migration
             $table->string('waktu_tempat_berangkat_kesekolah')->nullable();
             $table->boolean('sudah_lengkap')->default(0);
             $table->string('foto')->nullable();
-            $table->enum('status_kelulusan', ['lulus', 'tidak lulus'])->nullable();
+            $table->enum('status_kelulusan_berkas', ['belum','lulus', 'tidak lulus'])->nullable();
             $table->boolean('sudah_cek_berkas')->default(0);
             $table->boolean('sudah_tes')->default(0);
             $table->string('sumber_informasi')->nullable();

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('peserta', function (Blueprint $table){
             $table->boolean('batal_sekolah')->nullable();
+            $table->boolean('cek_ulang_data')->nullable();
+            $table->enum('sudah_lulus', ['belum', 'proses', 'lulus', 'tidak_lulus'])->nullable();
         });
     }
 
@@ -23,6 +25,8 @@ return new class extends Migration
     {
         Schema::table('peserta', function (Blueprint $table){
             $table->dropColumn('batal_sekolah');
+            $table->dropColumn('cek_ulang_data');
+            $table->dropColumn('sudah_lulus');
         });
     }
 };

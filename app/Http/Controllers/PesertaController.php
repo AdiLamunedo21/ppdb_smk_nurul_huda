@@ -41,6 +41,8 @@ class PesertaController extends Controller
 
         public function index()
     {
+        $peserta = null;
+        $peserta = Peserta::all();
         $asal_sekolah = Peserta::select('asal_sekolah')->distinct()->get();
         $daftar_tahun = Gelombang::select('tahun')->distinct()->get();
         $nama_sekolah = request()->get('asal_sekolah');
@@ -51,7 +53,10 @@ class PesertaController extends Controller
             'sekolah' => $asal_sekolah,
             'nama_sekolah' => $nama_sekolah,
             'daftar_tahun' => $daftar_tahun,
-            'tahun' => $tahun]);
+            'tahun' => $tahun,
+            'peserta'=> $peserta
+    ]);
+
     }
 
         public function jsonPeserta()
