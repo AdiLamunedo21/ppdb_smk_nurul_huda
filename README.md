@@ -41,15 +41,11 @@ npm install
 
 ### 4. Konfigurasi Env
 
-Salin file `.env.example` menjadi `.env` dan sesuaikan variabel env sesuai kebutuhan:
+Salin file `.env.example` menjadi `.env` dan sesuaikan variabel env sesuai kebutuhan 
 
-```bash
-cp .env.example .env
-```
+Lalu :
 
-```bash
-Generate aplikasi key:
-```
+Salin teks di bawah untuk generate :
 
 ```bash
 php artisan key:generate
