@@ -84,8 +84,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/peserta/hapus', [PesertaController::class, 'hapus'])->middleware('role:superadmin|admin');
     Route::get('/peserta/json', [PesertaController::class, 'jsonPeserta'])->middleware('role:superadmin|admin');
     Route::get('/peserta/edit/{id}', [PesertaController::class, 'edit'])->middleware('role:superadmin|admin');
+    Route::post('/peserta/update/{id}', [PesertaController::class, 'update'])->middleware('role:superadmin|admin');
     Route::post('/set-status-kelulusan', [PesertaController::class, 'setStatusKelulusan'])->middleware('role:superadmin|admin');
-
     Route::get('/peserta-sudah-daftar-ulang', [PesertaController::class, 'sudahDaftarUlang'])->middleware('role:superadmin|admin|keuangan');
     Route::get('/peserta-sudah-daftar-ulang/json', [PesertaController::class, 'sudahDaftarUlangJson'])->middleware('role:superadmin|admin|keuangan');
     Route::post('/status-konfirm-daftar-ulang', [PesertaController::class, 'updateStatusLulus'])->middleware('role:superadmin|admin|keuangan');
@@ -108,9 +108,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/status-sk-lulus', [BerkasController::class, 'sk_lulus'])->middleware('role:superadmin|admin');
     Route::get('/status-sk-lulus/json', [BerkasController::class, 'jsonLulusKonfirmasi'])->middleware('role:superadmin|admin');
     Route::post('/status-konfirm-sk-lulus', [BerkasController::class, 'konfirmasiLulusStatus'])->middleware('role:superadmin|admin');
-
-    // keuangan
-    Route::get('/peserta/daftar-ulang/{no_pendaftaran}', [PesertaController::class, 'daftarUlang'])->middleware('role:superadmin|admin|keuangan');
 
     // Excel
     Route::get('/excel/peserta-lulus', [PesertaController::class, 'excelPesertaLulus'])->middleware('role:superadmin|admin');

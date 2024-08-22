@@ -32,6 +32,8 @@ class DashboardController extends Controller
 
             $total_lulus = Peserta::whereYear('created_at', $tahun)->where('sudah_lulus', 'lulus')->count();
 
+            $peserta_melengkapi_berkas = Peserta::whereYear('created_at', $tahun)->where('status_kelulusan_berkas', 'lulus')->count();
+
             // Daftar Ulang
             $sudah_daftar_ulang = Peserta::whereYear('created_at', $tahun)->where('sudah_daftar_ulang', true)->count();
             $belum_daftar_ulang = Peserta::whereYear('created_at', $tahun)->where('sudah_daftar_ulang', false)->where('sudah_lulus', 'lulus')->count();
@@ -68,7 +70,7 @@ class DashboardController extends Controller
                 'peserta_per_gelombang' => $jml_peserta_per_gelombang,
 
                 'sudah_lengkap_biodata' => $sudah_lengkap_biodata,
-
+                'status_kelulusan_berkas'=>$peserta_melengkapi_berkas,
                 'total_lulus' => $total_lulus,
                 'peserta_per_jurusan' => $per_jurusan,
                 'peserta_per_bulan' => $peserta_per_bulan,

@@ -19,8 +19,8 @@ class PesertaAdmExport implements FromCollection, WithHeadings, WithColumnWidths
     */
     public function collection()
     {
-        $data = Peserta::selectRaw('peserta.no_pendaftaran, peserta.nama_lengkap, prodi.nama, peserta.no_hp, peserta.asal_sekolah')
-            ->join('prodi', 'peserta.prodi_id', '=', 'prodi.prodi_id');
+        $data = Peserta::selectRaw('peserta.no_pendaftaran, peserta.nama_lengkap, jurusan.nama, peserta.no_hp, peserta.asal_sekolah')
+            ->join('jurusan', 'peserta.jurusan_id', '=', 'jurusan.jurusan_id');
 
         if (isset($this->param['asal_sekolah']))
         {
@@ -36,8 +36,8 @@ class PesertaAdmExport implements FromCollection, WithHeadings, WithColumnWidths
     {
         return [
             'No Pendaftaran',
-            'Nama Mahasiswa',
-            'Prodi',
+            'Nama Siswa',
+            'Jurusan Pilihan',
             'No. Handphone',
             'Asal Sekolah'
         ];

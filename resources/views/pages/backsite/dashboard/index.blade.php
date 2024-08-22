@@ -16,7 +16,7 @@
                         Mari Terus Pantau Kegiatan <span class="fw-bold">PPDB </span> | SMK Nurul Huda
                         </p>
 
-                        <a href="javascript:0;" class="btn btn-sm btn-outline-primary">Lihat Pembayaran</a>
+
                     </div>
                     </div>
                     <div class="col-sm-5 text-center text-sm-left">
@@ -57,7 +57,6 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                         </div>
                     </div>
                     </div>
@@ -68,7 +67,7 @@
             </div>
         </div>
         {{-- <h5 class="col-md-12">Pembayaran Biaya Pendaftaran</h5> --}}
-        {{-- <div class="row">
+        <div class="row">
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card">
                             <div class="card-body">
@@ -93,15 +92,15 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
                                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                         </div>
                                     </div>
                                 </div>
-                                <span>SUDAH MELENGKAPI BIODATA</span>
+                                <p style="font-size: 14px">SUDAH MELENGKAPI BIODATA</p>
                                 <h3 class="card-title text-success mb-1 bx bx-up-arrow-alt">{{ $statistik->sudah_lengkap_biodata }} Orang</h3>
                             </div>
                         </div>
                     </div>
+
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card">
                                 <div class="card-body">
@@ -126,16 +125,16 @@
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
                                             <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <span>TOTAL LULUS</span>
-                                    <h3 class="card-title text-success mb-1 bx bx-up-arrow-alt">{{ $statistik->total_lulus }} Orang</h3>
+                                    <p style="font-size: 14px" >SUDAH MELENGKAPI BERKAS</p>
+                                    <h3 class="card-title text-success mb-1 bx bx-up-arrow-alt">{{ $statistik->status_kelulusan_berkas }} Orang</h3>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
+
+                    <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card">
                             <div class="card-body">
                                 <div class="card-title d-flex align-items-start justify-content-between">
@@ -159,25 +158,58 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
                                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+
                                         </div>
                                     </div>
                                 </div>
-                                <span>SUDAH DAFTAR ULANG</span>
+                                <p style="font-size: 14px">SUDAH DAFTAR ULANG</p>
                                 <h3 class="card-title text-success mb-1 bx bx-up-arrow-alt">{{ $statistik->sudah_daftar_ulang }} Orang</h3>
                             </div>
                         </div>
                     </div>
-        </div> --}}
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <div class="avatar flex-shrink-0">
+                                            <img
+                                            src="{{ asset('/assets/admin/img/icons/unicons/wallet-info.png')}}"
+                                            alt="Credit Card"
+                                            class="rounded"
+                                            />
+                                        </div>
+                                        <div class="dropdown">
+                                            <button
+                                            class="btn p-0"
+                                            type="button"
+                                            id="cardOpt6"
+                                            data-bs-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            >
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p style="font-size: 14px">TOTAL LULUS</p>
+                                    <h3 class="card-title text-success mb-1 bx bx-up-arrow-alt">{{ $statistik->total_lulus }} Orang</h3>
+                                </div>
+                            </div>
+                        </div>
+        </div>
 
         <!--Tabel Halaman Dashboard - Program Pilihan  -->
         <div class="card">
             <div class="card-header">
                 <div class="card-header border-bottom">
                 <h4> Peserta Perprogram </h4>
-                <nav class="mt-3">
+                {{-- <nav class="mt-3">
                     <div class="pagination justify-content-end">
-                        <div style="padding-left: 12px;">
+                        <div style="padding-left: 14px;">
                             <a href="#" class="btn rounded-pill btn-info" >
                                 <i class="bx bx-printer" ></i>
                                 Cetak
@@ -188,7 +220,7 @@
                             </a>
                         </div>
                     </div>
-                </nav>
+                </nav> --}}
                 </div>
                 <div class="card-header" style="display: flex !important;">
                 </div>

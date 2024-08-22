@@ -50,6 +50,10 @@ class BerkasController extends Controller
         $peserta_id = auth()->user()->peserta_id;
 
         $peserta = Peserta::with('jurusan')->find($peserta_id);
+
+        if ($peserta->progres == 'sudah_buat_akun' )
+        return redirect('dashboard')->with(['error' => 'Anda belum melengkapi biodata pendaftaran.']);
+
         $ijazah = Ijazah::where('peserta_id', $peserta_id)->first();
         $sk_lulus = Sk_lulus::where('peserta_id', $peserta_id)->first();
         return view('pages.backsite-peserta.upload-berkas.index', [
@@ -112,14 +116,12 @@ class BerkasController extends Controller
             }
 
             if ($simpan) {
-                $user = User::find(1);
-                if ($user) {
-                    $user->notify(new UploadBukti($user, $peserta->nama_lengkap));
+                    $user = User::find(1);
+                    if ($user) {
+                        $user->notify(new UploadBukti($user, $peserta->nama_lengkap, 'ijazah'));
+                    }
+                    return response()->json(['success' => 'Upload berhasil']);
                 }
-                return response()->json(['success' => 'Upload berhasil']);
-            } else {
-                return response()->json(['error' => 'Gagal upload'], 500);
-            }
         } else {
             return response()->json(['error' => 'File tidak ditemukan'], 400);
         }
@@ -245,15 +247,12 @@ class BerkasController extends Controller
             }
 
             if ($simpan) {
-                // Kirim notifikasi ke admin
-                $user = User::find(1);
-                if ($user) {
-                    $user->notify(new UploadBukti($user, $peserta->nama_lengkap));
+                    $user = User::find(1);
+                    if ($user) {
+                        $user->notify(new UploadBukti($user, $peserta->nama_lengkap, 'sk lulus'));
+                    }
+                    return response()->json(['success' => 'Upload berhasil']);
                 }
-                return response()->json(['success' => 'Upload berhasil']);
-            } else {
-                return response()->json(['error' => 'Gagal upload'], 500);
-            }
         } else {
             return response()->json(['error' => 'File tidak ditemukan'], 400);
         }

@@ -16,6 +16,9 @@ use App\Models\NamaWali;
 use App\Models\User;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
+use App\Models\Ijazah;
+use App\Models\Sk_lulus;
+
 
 use App\Models\Jurusan;
 
@@ -28,6 +31,7 @@ use App\Notifications\DaftarBerhasil;
 
 use App\Exports\PesertaLulusExport;
 use App\Exports\PesertaLulusDaftarExport;
+use App\Exports\PesertaAdmExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PesertaController extends Controller
@@ -97,13 +101,72 @@ class PesertaController extends Controller
         }
 
         $peserta->tanggal_lahir = Carbon::parse($peserta->tanggal_lahir)->format('Y-m-d');
+        if ($peserta->catatan_prestasi->isEmpty()) {
+            $peserta->catatan_prestasi = collect([new Prestasi([
+                'peserta_id' => $id,
+                'apakah_berprestasi' => 'belum',
+                'nama_prestasi' => null,
+                'tahun' => null,
+                'penyelenggara' => null,
+                'tingkat' => null,
+            ])]);
+        }
+
+        $catatanPrestasiExists = $peserta->catatan_prestasi->isNotEmpty() && $peserta->catatan_prestasi->first()->exists;
+
+        if ($peserta->namaAyah->isEmpty()) {
+            $peserta->namaAyah = collect([new NamaAyah([
+                'peserta_id' => $id,
+                'punya_ayah' => 'belum_ayah',
+                'nama_lengkap_ayah' => null,
+                'tahun_lahir_ayah' => null,
+                'pendidikan_terakhir_ayah' => null,
+                'pekerjaan_ayah' => null,
+                'penghasilan_perbulan_ayah' => null,
+            ])]);
+        }
+
+        $isAyahLengkap = $peserta->namaAyah->isNotEmpty() && $peserta->namaAyah->first()->exists;
+
+        if ($peserta->namaIbu->isEmpty()) {
+            $peserta->namaIbu = collect([new NamaIbu([
+                'peserta_id' => $id,
+                'punya_ibu' => 'belum_ibu',
+                'nama_lengkap_ibu' => null,
+                'tahun_lahir_ibu' => null,
+                'pendidikan_terakhir_ibu' => null,
+                'pekerjaan_ibu' => null,
+                'penghasilan_perbulan_ibu' => null,
+            ])]);
+        }
+
+        $isIbuLengkap = $peserta->namaIbu->isNotEmpty() && $peserta->namaIbu->first()->exists;
+
+        if ($peserta->namaWali->isEmpty()) {
+            $peserta->namaWali = collect([new NamaWali([
+                'peserta_id' => $id,
+                'punya_wali' => 'belum_wali',
+                'nama_lengkap_wali' => null,
+                'tahun_lahir_wali' => null,
+                'pendidikan_terakhir_wali' => null,
+                'pekerjaan_wali' => null,
+                'penghasilan_perbulan_wali' => null,
+            ])]);
+        }
+
+        $isWaliLengkap = $peserta->namaWali->isNotEmpty() && $peserta->namaWali->first()->exists;
 
         return view('pages.backsite.daftar-peserta.edit-peserta', [
             'id' => $id,
             'peserta' => $peserta,
+            'prestasi' => $peserta->catatan_prestasi->first(),
             'jurusan' => $jurusan,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
+            'catatanPrestasiExists' => $catatanPrestasiExists,
+            'isAyahLengkap' => $isAyahLengkap,
+            'isIbuLengkap'=> $isIbuLengkap,
+            'isWaliLengkap'=>$isWaliLengkap,
         ]);
     }
 
@@ -221,7 +284,7 @@ class PesertaController extends Controller
 
     public function update(Request $request)
     {
-        $peserta_id = auth()->user()->hasRole('superadmin') || auth()->user()->hasRole('admin') ? $request->peserta_id : auth()->user()->peserta_id;
+        $peserta_id = auth()->user()->hasRole('admin') ? $request->peserta_id : auth()->user()->peserta_id;
         $section = $request->input('section');
         $rules = [];
         switch ($section) {
@@ -432,6 +495,24 @@ class PesertaController extends Controller
                     );
                 }
         break;
+
+        case 'ubah_password':
+            $rules = [
+                'password_baru' => 'required|min:8',
+            ];
+            $this->validate($request, $rules);
+            $peserta = Peserta::find($peserta_id);
+            $getUser = User::where('peserta_id', $peserta_id)->first();
+            $user_id = $getUser->id;
+            $user = User::find($user_id);
+            $user->no_pendaftaran = $peserta->no_pendaftaran;
+            if ($request->password_baru) {
+                $user->password = Hash::make($request->password_baru);
+            }
+            $user->save();
+
+        break;
+
         default:
             return redirect()->back()->with(['error' => "Bagian tidak ditemukan"]);
         }
@@ -544,18 +625,6 @@ class PesertaController extends Controller
         }
 
         if ($updatePeserta) {
-            if (auth()->user()->hasRole('superadmin')) {
-                $getUser = User::where('peserta_id', $peserta_id)->first();
-                $user_id = $getUser->id;
-            } else {
-                $user_id = auth()->user()->id;
-            }
-            $user = User::find($user_id);
-            $user->no_pendaftaran = $peserta->no_pendaftaran;
-            if (auth()->user()->hasRole('superadmin') && $request->password_baru) {
-                $user->password = Hash::make($request->password_baru);
-            }
-            $user->save();
             return redirect()->back()->with(['success' => "Data berhasil disimpan"]);
         } else {
             return redirect()->back()->with(['error' => "Gagal menyimpan data"]);
@@ -637,27 +706,32 @@ class PesertaController extends Controller
     }
 
 public function hapus(Request $request)
-{
-    $peserta = Peserta::findOrFail($request->peserta_id);
+    {
+        // Temukan peserta berdasarkan ID
+        $peserta = Peserta::findOrFail($request->peserta_id);
 
-    NamaAyah::where('peserta_id', $request->peserta_id)->delete();
-    NamaIbu::where('peserta_id', $request->peserta_id)->delete();
-    NamaWali::where('peserta_id', $request->peserta_id)->delete();
-    Prestasi::where('peserta_id', $request->peserta_id)->delete();
+        // Hapus data terkait di tabel nama ayah, ibu, wali, prestasi, dan ijazah
+        NamaAyah::where('peserta_id', $request->peserta_id)->delete();
+        NamaIbu::where('peserta_id', $request->peserta_id)->delete();
+        NamaWali::where('peserta_id', $request->peserta_id)->delete();
+        Prestasi::where('peserta_id', $request->peserta_id)->delete();
+        Ijazah::where('peserta_id', $request->peserta_id)->delete();
+        Sk_lulus::where('peserta_id', $request->peserta_id)->delete();
 
-    // Hapus peserta
-    $delete = $peserta->delete();
+        // Hapus peserta
+        $delete = $peserta->delete();
 
-    if ($delete) {
-        $user = User::where('peserta_id', $request->peserta_id)->first();
-        if ($user) {
-            $user->delete();
+        if ($delete) {
+            // Jika peserta berhasil dihapus, hapus juga user terkait jika ada
+            $user = User::where('peserta_id', $request->peserta_id)->first();
+            if ($user) {
+                $user->delete();
+            }
+            return redirect()->back()->withSuccess('Peserta berhasil dihapus');
+        } else {
+            return redirect()->back()->withError('Gagal menghapus data');
         }
-        return redirect()->back()->withSuccess('Peserta berhasil dihapus');
-    } else {
-        return redirect()->back()->withError('Gagal menghapus data');
     }
-}
 
 
 
@@ -712,44 +786,6 @@ public function hapus(Request $request)
 
         return Datatables::of($result)->make(true);
     }
-
-        public function daftarUlang($no_pendaftaran)
-    {
-        $peserta = Peserta::with('jurusan')->where('no_pendaftaran', $no_pendaftaran)->first();
-
-        if (!$peserta) redirect('/peserta-lulus');
-
-        $total_bayar = 0;
-        $belum_dibayar = 0;
-
-        $riwayat_pembayaran = RiwayatPembayaran::with('detail')->where('peserta_id', $peserta->peserta_id)->first();
-        $jumlah_tagihan_que = Biaya::where('jurusan_id', $peserta->jurusan_id)->selectRaw('SUM(nominal) as tagihan')->first();
-        $jumlah_tagihan = $jumlah_tagihan_que ? $jumlah_tagihan_que->tagihan : 0;
-
-        if ($peserta->jurusan->jurusan_id == 1) {
-            $jumlah_tagihan = 4335000;
-        } else {
-            $jumlah_tagihan = 4585000;
-        }
-
-        if ($riwayat_pembayaran && count($riwayat_pembayaran->detail) > 0) {
-            $total_bayar_que = RiwayatPembayaranDetail::where('riwayat_bayar_id', $riwayat_pembayaran->riwayat_bayar_id)->selectRaw('SUM(nominal) as nominal')->first();
-            $total_bayar = $total_bayar_que ? $total_bayar_que->nominal : 0;
-            $belum_dibayar = $jumlah_tagihan - $total_bayar;
-        }
-
-        $siswa = Siswa::where('peserta_id', $peserta->peserta_id)->first();
-
-        return view('pages.backsite.peserta-daftar-ulang.index', [
-            'peserta' => $peserta,
-            'riwayat_pembayaran' => $riwayat_pembayaran,
-            'jumlah_tagihan' => $jumlah_tagihan,
-            'total_bayar' => $total_bayar,
-            'belum_dibayar' => $belum_dibayar,
-            'siswa' => $siswa
-        ]);
-    }
-
 
 
     public function sudahDaftarUlang()

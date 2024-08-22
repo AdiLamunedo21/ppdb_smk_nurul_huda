@@ -14,7 +14,7 @@
 @endif
 <ul class="nav nav-pills flex-column flex-md-row mb-3">
     <li class="nav-item">
-        <a class="nav-link" href="/biodata"><i class="bx bx-user me-1"></i>Biodata Diri</a>
+        <a class="nav-link" href="/peserta"><i class="bx bx-user me-1"></i>Daftar Peserta</a>
     </li>
     <li class="nav-item">
         <a class="nav-link active" href="/biodata/edit"
@@ -42,7 +42,7 @@
         <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="informasi_pendaftaran">
@@ -151,10 +151,11 @@
         <div id="accordionTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="informasi_pribadi">
+                            <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
                             <div class="mb-3 col-md-6">
                                 <label for="nik" class="form-label">NIK</label>
                                 <input type="text" class="form-control" id="nik" name="nik" placeholder="Masukan NIK Pendaftar Sebanyak 16 karakter" value="{{ old('nik', $peserta->nik ?? '') }}" />
@@ -217,10 +218,11 @@
         <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
         <div class="accordion-body">
             <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="alamat">
+                            <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
                             <div class="mb-3 col-md-6">
                                 <label for="dusun" class="form-label">Dusun</label>
                                 <input type="text" class="form-control" id="dusun" name="dusun" placeholder="Masukan Dusun" value="{{ old('dusun', $peserta->dusun ?? '') }}" />
@@ -292,10 +294,11 @@
         <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
         <div class="accordion-body">
             <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="data_lainnya">
+                            <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
                             <div class="mb-3 col-md-6">
                                 <label for="kebutuhan_khusus" class="form-label">Kebutuhan Khusus</label>
                                 <select id="kebutuhan_khusus" name="kebutuhan_khusus" class="select2 form-select">
@@ -359,10 +362,11 @@
         <div id="accordionFive" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="prestasi">
+                            <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
 
                             <!-- Pertanyaan Apakah Berprestasi -->
                             <div class="mb-3 col-md-6 grid-item">
@@ -427,10 +431,11 @@
         <div id="accordionSixAyah" class="accordion-collapse collapse" aria-labelledby="headingSixAyah" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="biodata_ayah">
+                            <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
                         @foreach ($peserta->namaAyah as $ayah)
 
                             <!-- Pertanyaan Apakah Anda mempunyai ayah? -->
@@ -509,10 +514,11 @@
         <div id="accordionSixIbu" class="accordion-collapse collapse" aria-labelledby="headingSixIbu" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="biodata_ibu">
+                            <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
                         @foreach ($peserta->namaIbu as $ibu)
 
                             <!-- Pertanyaan Apakah Anda mempunyai ibu? -->
@@ -591,10 +597,11 @@
         <div id="accordionSixWali" class="accordion-collapse collapse" aria-labelledby="headingSixWali" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="card-body">
-                    <form action="/biodata/update" method="POST" enctype="multipart/form-data">
+                    <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <input type="hidden" name="section" value="biodata_wali">
+                            <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
                         @foreach ($peserta->namaWali as $wali)
 
                             <!-- Pertanyaan Apakah Anda mempunyai wali? -->
@@ -658,6 +665,37 @@
             </div>
         </div>
     </div>
+
+<div class="card accordion-item">
+    <h2 class="accordion-header" id="headingPW">
+        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionPW" aria-expanded="false" aria-controls="accordionSixWali" role="tabpanel">
+            <span>UBAH PASSWORD</span>
+        </button>
+    </h2>
+    <div id="accordionPW" class="accordion-collapse collapse" aria-labelledby="headingPW" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class="card-body">
+                <form action="/peserta/update/{id}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="section" value="ubah_password">
+                    <input type="hidden" name="peserta_id" value="{{ $peserta->peserta_id }}" >
+
+                    <div class="form-group row">
+                        <label class="col-md-3 my-auto">Ganti Password</label>
+                        <div class="col-md-8">
+                            <input class="form-control" id="password_baru" name="password_baru">
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2">SIMPAN</button>
+                        <button type="reset" class="btn btn-outline-secondary">CANCEL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
